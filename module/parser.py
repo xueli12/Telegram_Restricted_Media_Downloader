@@ -81,6 +81,19 @@ class TelegramRestrictedMediaDownloaderArgumentParser(ArgumentParser):
             choices=[MODE.ONCE, MODE.SESSION],
             help='设置运行模式'
         )
+        self.add_argument(
+            '--api',
+            action='store_true',
+            default=False,
+            help='启用 REST API 接口'
+        )
+        self.add_argument(
+            '--api-port',
+            type=int,
+            required=False,
+            default=8080,
+            help='REST API 服务端口 (默认：8080)'
+        )
 
     def print_help(self, file=None):
         console.print(
