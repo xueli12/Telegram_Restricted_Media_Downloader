@@ -1,27 +1,4 @@
-# ignore folders
-.idea/
+```
 __pycache__/
-sessions/
-temp/
-output/
-img/
-venv/
-ConfigBackup/
-tests/
-test*
-downloads/
-DownloadRecordForm/
-# ignore files
-*.txt
-*.exe
-*.yaml
-*.template
-*.xml
-*.lock
-*.session
-*.session-journal
-test*.py
-Pipfile
-# include files
-!rar.exe
-!requirements.txt
+*.pyc
+```
