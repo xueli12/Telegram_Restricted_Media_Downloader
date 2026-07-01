@@ -61,7 +61,7 @@ class TelegramUploader:
     ):
         self.app = download_object.app
         self.client: pyrogram.Client = self.app.client
-        self.loop: asyncio.AbstractEventLoop = download_object.loop
+        # 不保存固定的 loop 引用，每次使用时获取当前循环
         self.event: asyncio.Event = asyncio.Event()
         self.pb: ProgressBar = download_object.pb
         self.is_premium: bool = self.client.me.is_premium
@@ -117,7 +117,9 @@ class TelegramUploader:
                     if inspect.iscoroutinefunction(progress):
                         await func()
                     else:
-                        await self.loop.run_in_executor(self.client.executor, func)
+                        # 获取当前事件循环，避免使用固定的 loop 引用
+                        loop = asyncio.get_event_loop()
+                        await loop.run_in_executor(self.client.executor, func)
 
             except Exception as e:
                 log.error(
@@ -543,7 +545,8 @@ class TelegramUploader:
             info=f'0.00B/{format_file_size}',
             total=file_size
         )
-        _task = self.loop.create_task(
+        # 使用当前事件循环创建任务，避免使用固定的 loop 引用
+        _task = asyncio.create_task(
             self.resume_upload(
                 upload_task=upload_task,
                 progress=self.pb.upload,
